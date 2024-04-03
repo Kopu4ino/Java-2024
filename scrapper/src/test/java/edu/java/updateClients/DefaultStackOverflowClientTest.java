@@ -8,7 +8,6 @@ import edu.java.updateClients.updateDto.StackOverflowQuestionResponse;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,11 +59,10 @@ class DefaultStackOverflowClientTest {
         OffsetDateTime expectedDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1705410153), ZoneOffset.UTC);
 
         //Act
-        List<StackOverflowQuestionResponse> responseList = client.fetchQuestion("1");
+        StackOverflowQuestionResponse responseList = client.fetchQuestion(1L);
 
         //Assert
-        assertThat(responseList).hasSize(1);
-        assertThat(responseList.getFirst().items().getFirst().owner().displayName()).isEqualTo("Kopu4ino");
-        assertThat(responseList.getFirst().items().getFirst().getLastActivityDateAsOffsetDateTime()).isEqualTo(expectedDate);
+        assertThat(responseList.items().getFirst().owner().displayName()).isEqualTo("Kopu4ino");
+        assertThat(responseList.items().getFirst().lastActivityDate()).isEqualTo(expectedDate);
     }
 }

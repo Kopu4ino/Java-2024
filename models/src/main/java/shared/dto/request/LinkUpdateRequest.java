@@ -2,7 +2,6 @@ package shared.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import java.net.URI;
 import java.util.List;
 
 public record LinkUpdateRequest(
@@ -10,7 +9,7 @@ public record LinkUpdateRequest(
     @NotNull
     Long id,
     @NotNull
-    URI url,
+    String url,
     String description,
     @NotEmpty
     List<Long> tgChatIds

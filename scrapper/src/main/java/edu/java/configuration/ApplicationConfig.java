@@ -12,7 +12,9 @@ import org.springframework.validation.annotation.Validated;
 public record ApplicationConfig(
     @NotBlank String gitHubBaseUrl,
     @NotBlank String stackoverflowBaseUrl,
-    @NotNull String botBaseUrl,
+    @NotBlank String botBaseUrl,
+    @NotNull Integer updatesCount,
+    @NotNull Long interval,
 
     @Bean
     @NotNull Scheduler scheduler

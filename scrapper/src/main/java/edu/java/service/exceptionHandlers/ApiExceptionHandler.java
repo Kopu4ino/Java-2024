@@ -1,9 +1,9 @@
-package edu.java.services.exceptionHandlers;
+package edu.java.service.exceptionHandlers;
 
-import edu.java.services.exceptions.ChatAlreadyRegisteredException;
-import edu.java.services.exceptions.ChatIdNotExistsException;
-import edu.java.services.exceptions.LinkAlreadyTrackException;
-import edu.java.services.exceptions.LinkNotExistsException;
+import edu.java.service.exceptions.ChatAlreadyRegisteredException;
+import edu.java.service.exceptions.ChatIdNotExistsException;
+import edu.java.service.exceptions.LinkAlreadyTrackException;
+import edu.java.service.exceptions.LinkNotExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,9 +17,9 @@ public class ApiExceptionHandler {
     public ApiErrorResponse handleException(ChatAlreadyRegisteredException ex) {
         return new ApiErrorResponse(
             ex.getMessage(),
-            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            ex.getStatusCode().getReasonPhrase(),
             ex.getClass().getSimpleName(),
-            ex.getMessage()
+            ex.getDescription()
         );
     }
 
@@ -28,9 +28,9 @@ public class ApiExceptionHandler {
     public ApiErrorResponse handleException(ChatIdNotExistsException ex) {
         return new ApiErrorResponse(
             ex.getMessage(),
-            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            ex.getStatusCode().getReasonPhrase(),
             ex.getClass().getSimpleName(),
-            ex.getMessage()
+            ex.getDescription()
         );
     }
 
@@ -39,9 +39,9 @@ public class ApiExceptionHandler {
     public ApiErrorResponse handleException(LinkNotExistsException ex) {
         return new ApiErrorResponse(
             ex.getMessage(),
-            HttpStatus.NOT_FOUND.getReasonPhrase(),
+            ex.getStatusCode().getReasonPhrase(),
             ex.getClass().getSimpleName(),
-            ex.getMessage()
+            ex.getDescription()
         );
     }
 
@@ -50,9 +50,9 @@ public class ApiExceptionHandler {
     public ApiErrorResponse handleException(LinkAlreadyTrackException ex) {
         return new ApiErrorResponse(
             ex.getMessage(),
-            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            ex.getStatusCode().getReasonPhrase(),
             ex.getClass().getSimpleName(),
-            ex.getMessage()
+            ex.getDescription()
         );
     }
 }

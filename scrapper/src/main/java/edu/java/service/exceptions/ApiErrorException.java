@@ -1,4 +1,4 @@
-package edu.java.services.exceptions;
+package edu.java.service.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
