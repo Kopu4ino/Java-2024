@@ -39,7 +39,7 @@ public class ListCommand implements Command {
                 message = listOfUrl.toString();
             }
         } catch (ApiErrorException e) {
-            log.warn(e.getApiErrorResponse().description());
+            log.error(e.getApiErrorResponse().description());
             message = e.getMessage();
         }
 

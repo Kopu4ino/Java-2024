@@ -7,8 +7,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Chat {
     private Long id;
-
-    public Chat(Long id) {
-        this.id = id;
-    }
 }

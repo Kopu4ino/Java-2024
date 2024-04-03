@@ -1,7 +1,7 @@
 create table if not exists chat_link
 (
-    chatId bigint references chat (id),
-    linkId bigint references link (id),
+    chat_id bigint references chat (id),
+    link_id bigint references link (id),
 
-    primary key (chatId, linkId)
+    primary key (chat_id, link_id)
 );

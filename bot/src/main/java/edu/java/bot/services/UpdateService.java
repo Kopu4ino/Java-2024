@@ -12,7 +12,7 @@ public class UpdateService {
     private final TelegramBot bot;
 
     public void processUpdate(LinkUpdateRequest updateRequest) {
-        String message = "По ссылке %s произошли изменения: %s"
+        String message = "По ссылке %s произошли изменения:\n%s"
             .formatted(updateRequest.url(), updateRequest.description());
 
         updateRequest.tgChatIds().forEach((telegramId) ->

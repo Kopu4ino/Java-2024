@@ -45,7 +45,6 @@ public class GitHubLinkUpdater implements LinkUpdater {
                     link.getId(),
                     link.getUrl(),
                     "\nNew Event!\nType: %s\nBy_User:%s".formatted(
-                        lastEvent.repo().url(),
                         lastEvent.type(),
                         lastEvent.actor().login()
                     ),

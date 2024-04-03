@@ -44,6 +44,7 @@ public class LinkUpdaterScheduler {
             String response = botWebClient.sendUpdate(update);
             log.info("Update for link with id %d: %s".formatted(update.id(), response));
         });
+        log.info("Updates processed");
 
     }
 }
