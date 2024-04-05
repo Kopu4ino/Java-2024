@@ -1,8 +1,7 @@
 package edu.java.api.client;
 
 import edu.java.configuration.ApplicationConfig;
-import edu.java.services.exceptions.ApiErrorException;
-import java.util.Optional;
+import edu.java.service.exceptions.ApiErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class BotClient {
         this.webClient = webClientBuilder.baseUrl(baseUrl).build();
     }
 
-    public Optional<String> sendUpdate(LinkUpdateRequest update) {
+    public String sendUpdate(LinkUpdateRequest update) {
         return webClient
             .post()
             .uri("/updates")
@@ -39,6 +38,6 @@ public class BotClient {
                     .flatMap(errorResponse -> Mono.error(new ApiErrorException(errorResponse)))
             )
             .bodyToMono(String.class)
-            .blockOptional();
+            .block();
     }
 }

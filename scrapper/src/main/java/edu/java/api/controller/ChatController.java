@@ -1,8 +1,8 @@
 package edu.java.api.controller;
 
-import edu.java.services.ChatLinksService;
+import edu.java.service.jdbc.JdbcChatService;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/tg-chat")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ChatController {
     @Autowired
-    private final ChatLinksService chatService;
+    private final JdbcChatService chatService;
 
-    @PostMapping("/{id}")
-    public String registerChat(@PathVariable @NotNull Long id) {
-        chatService.registerChat(id);
-        return "Chat registered";
+    @PostMapping("/{chatId}")
+    public String registerChat(@PathVariable @NotNull Long chatId) {
+        chatService.registerChat(chatId);
+        return "Chat registered with id=%d".formatted(chatId);
     }
 
-    @DeleteMapping("/{id}")
-    public String deletChat(@PathVariable @NotNull Long id) {
-        chatService.deleteChat(id);
-        return "Chat deleted";
+    @DeleteMapping("/{chatId}")
+    public String deleteChat(@PathVariable @NotNull Long chatId) {
+        chatService.unregisterChat(chatId);
+        return "Chat deleted with id=%d".formatted(chatId);
     }
 }

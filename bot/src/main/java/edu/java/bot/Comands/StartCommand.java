@@ -2,26 +2,30 @@ package edu.java.bot.Comands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.Repository.UserRepository;
 import edu.java.bot.ResponseMessage.StandardResponseMessage;
-import lombok.AllArgsConstructor;
+import edu.java.bot.api.client.ScrapperClient;
+import edu.java.bot.services.exceptions.ApiErrorException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class StartCommand implements Command {
-    @Autowired
-    private final UserRepository repository;
+    @Autowired final ScrapperClient scrapperClient;
 
     @Override
     public SendMessage handle(Update update) {
-        Long userId = update.message().chat().id();
-        if (!repository.isUserRegistered(userId)) {
-            repository.registerUser(userId);
-            return new SendMessage(userId, StandardResponseMessage.SUCCESS_REGISTRATION.getMessage());
+        Long chatId = update.message().chat().id();
+
+        try {
+            scrapperClient.registerChat(chatId);
+        } catch (ApiErrorException exception) {
+            return new SendMessage(chatId, StandardResponseMessage.ALREADY_REGISTERED.getMessage());
         }
-        return new SendMessage(userId, StandardResponseMessage.ALREADY_REGISTERED.getMessage());
+
+        return new SendMessage(chatId, StandardResponseMessage.SUCCESS_REGISTRATION.getMessage());
+
     }
 
     @Override

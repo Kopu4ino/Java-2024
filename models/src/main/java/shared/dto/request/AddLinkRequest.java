@@ -1,8 +1,9 @@
 package shared.dto.request;
 
-import java.net.URI;
+import jakarta.validation.constraints.NotBlank;
 
 public record AddLinkRequest(
-    URI url
+    @NotBlank
+    String url
 ) {
 }

@@ -1,7 +1,6 @@
 create table if not exists chat
 (
-    id        bigint generated always as identity,
-    user_name text,
+    id   bigint,
 
     primary key (id)
 );

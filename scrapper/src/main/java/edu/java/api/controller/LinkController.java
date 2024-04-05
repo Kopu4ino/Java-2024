@@ -1,6 +1,8 @@
 package edu.java.api.controller;
 
-import edu.java.services.ChatLinksService;
+import edu.java.domain.model.Link;
+import edu.java.mapper.DefaultObjectMapper;
+import edu.java.service.jdbc.JdbcLinkService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +22,27 @@ import shared.dto.response.LinkResponse;
 @AllArgsConstructor
 public class LinkController {
     @Autowired
-    private final ChatLinksService service;
+    private final JdbcLinkService linkService;
+
+    @Autowired DefaultObjectMapper mapper;
 
     @GetMapping
     public List<LinkResponse> getLinks(@RequestHeader("Tg-Chat-Id") Long chatId) {
-        return service.getChatLinks(chatId);
+        List<Link> userLinks = linkService.getUserLinks(chatId);
+        return mapper.mapToListLinksResponse(userLinks);
     }
 
     @PostMapping
-    public LinkResponse addLink(@RequestHeader("Tg-Chat-Id") Long chatId, @RequestBody AddLinkRequest link) {
-        return service.addLink(chatId, link);
+    public LinkResponse addLink(@RequestHeader("Tg-Chat-Id") Long chatId, @RequestBody AddLinkRequest request) {
+        Link link = mapper.convertToLink(request);
+        Link addedLink = linkService.addLink(chatId, link);
+        return mapper.convertToLinkResponse(addedLink);
     }
 
     @DeleteMapping
-    public LinkResponse deleteLink(@RequestHeader("Tg-Chat-Id") Long chatId, @RequestBody RemoveLinkRequest link) {
-        return service.removeLink(chatId, link);
+    public LinkResponse deleteLink(@RequestHeader("Tg-Chat-Id") Long chatId, @RequestBody RemoveLinkRequest request) {
+        Link link = mapper.convertToLink(request);
+        Link removedLink = linkService.deleteLink(chatId, link);
+        return mapper.convertToLinkResponse(removedLink);
     }
 }

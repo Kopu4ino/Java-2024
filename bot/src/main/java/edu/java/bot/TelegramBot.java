@@ -24,13 +24,10 @@ public class TelegramBot extends com.pengrad.telegrambot.TelegramBot {
     private void init() {
         this.setUpdatesListener(updates -> {
             for (Update update : updates) {
-                if (update.message() != null) {
-                    log.info("UPDATE:" + update);
+                log.info("UPDATE:" + update);
+                SendMessage sendMessage = userMessageProcessor.process(update);
+                this.execute(sendMessage);
 
-                    SendMessage sendMessage = userMessageProcessor.process(update);
-
-                    this.execute(sendMessage);
-                }
             }
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
         });

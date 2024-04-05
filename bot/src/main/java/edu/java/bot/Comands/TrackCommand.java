@@ -5,56 +5,58 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.Entity.EntityType;
 import edu.java.bot.Links.LinkHandler;
-import edu.java.bot.Repository.UserRepository;
 import edu.java.bot.ResponseMessage.StandardResponseMessage;
+import edu.java.bot.api.client.ScrapperClient;
+import edu.java.bot.services.exceptions.ApiErrorException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import shared.dto.request.AddLinkRequest;
 import static edu.java.bot.Utils.EntityUtils.getEntityByName;
 import static edu.java.bot.Utils.EntityUtils.getTextFromEntity;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Log4j2
 public class TrackCommand implements Command {
+
     @Autowired
-    private final UserRepository userRepository;
+    private final ScrapperClient scrapperClient;
 
     @Autowired
     private final List<LinkHandler> handlers;
 
     @Override
     public SendMessage handle(Update update) {
+        Long chatId = update.message().chat().id();
         String message;
-        Long userId = update.message().chat().id();
 
         MessageEntity urlEntity = getEntityByName(update, EntityType.URL.getName());
+
         if (urlEntity != null) {
             String urlText = getTextFromEntity(update, urlEntity);
-            boolean isHandled = false;
+            boolean isCanHandle = false;
             try {
                 URI uri = new URI(urlText);
                 LinkHandler chain = buildChain();
-                if (chain != null) {
-                    isHandled = chain.handle(uri);
-                }
+                isCanHandle = chain.handle(uri);
             } catch (URISyntaxException e) {
                 log.error("Ошибка преобразования ссылки в uri. Ссылка: " + urlText);
                 throw new RuntimeException(e);
             }
 
-            if (isHandled) {
-                boolean wasAdded = userRepository.addLink(userId, urlText);
-                if (wasAdded) {
+            if (isCanHandle) {
+                try {
+                    scrapperClient.addLink(chatId, new AddLinkRequest(urlText));
                     message = StandardResponseMessage.LINK_ADDED_SUCCESSFULLY.getMessage();
-                } else {
-                    message = StandardResponseMessage.LINK_ALREADY_TRACKED.getMessage();
+                } catch (ApiErrorException e) {
+                    log.warn(e.getApiErrorResponse().description());
+                    message = e.getApiErrorResponse().exceptionMessage();
                 }
-
             } else {
                 message = StandardResponseMessage.LINK_PROCESSING_FAILED.getMessage();
             }
@@ -62,7 +64,7 @@ public class TrackCommand implements Command {
             message = StandardResponseMessage.ADD_LINK_COMMAND_USAGE.getMessage();
         }
 
-        return new SendMessage(userId, message);
+        return new SendMessage(chatId, message);
     }
 
     public LinkHandler buildChain() {

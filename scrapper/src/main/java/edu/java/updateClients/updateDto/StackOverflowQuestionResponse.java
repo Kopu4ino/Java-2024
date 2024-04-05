@@ -1,9 +1,7 @@
 package edu.java.updateClients.updateDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 public record StackOverflowQuestionResponse(
@@ -15,12 +13,8 @@ public record StackOverflowQuestionResponse(
         Owner owner,
 
         @JsonProperty("last_activity_date")
-        long lastActivityDate
+        OffsetDateTime lastActivityDate
     ) {
-        public OffsetDateTime getLastActivityDateAsOffsetDateTime() {
-            return Instant.ofEpochSecond(lastActivityDate).atOffset(ZoneOffset.UTC);
-        }
-
         public record Owner(
             @JsonProperty("display_name")
             String displayName

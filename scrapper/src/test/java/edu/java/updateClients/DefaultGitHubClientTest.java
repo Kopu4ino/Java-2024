@@ -70,7 +70,7 @@ public class DefaultGitHubClientTest {
         );
 
         //Act
-        List<GitHubEventResponse> gitHubEventResponses = client.fetchRepositoryEvents("owner", "repoName");
+        List<GitHubEventResponse> gitHubEventResponses = client.fetchRepositoryEvents("owner", "repoName", 1);
 
         //Assert
         assertThat(gitHubEventResponses).hasSize(1);
