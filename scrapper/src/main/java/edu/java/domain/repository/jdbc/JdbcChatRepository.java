@@ -1,4 +1,4 @@
-package edu.java.domain;
+package edu.java.domain.repository.jdbc;
 
 import edu.java.domain.model.Chat;
 import edu.java.domain.model.Link;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatRepository {
+public class JdbcChatRepository {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
