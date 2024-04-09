@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.ChatRepository;
 import edu.java.domain.model.Chat;
+import edu.java.domain.repository.jdbc.JdbcChatRepository;
 import edu.java.service.ChatService;
 import edu.java.service.exceptions.ChatAlreadyRegisteredException;
 import edu.java.service.exceptions.ChatIdNotExistsException;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
-    private final ChatRepository chatRepository;
+    private final JdbcChatRepository chatRepository;
 
     @Override
     public void registerChat(Long chatId) {
@@ -35,7 +35,6 @@ public class JdbcChatService implements ChatService {
         chatRepository.findById(chatId)
             .orElseThrow(() -> new ChatIdNotExistsException(chatId));
     }
-
 
     @Override
     public Optional<Chat> findChat(Long chatId) {

@@ -1,7 +1,5 @@
-package edu.java.domain.link;
+package edu.java.domain.repository.jdbc;
 
-import edu.java.domain.ChatRepository;
-import edu.java.domain.LinkRepository;
 import edu.java.domain.model.Link;
 import edu.java.scrapper.IntegrationTest;
 import java.time.OffsetDateTime;
@@ -10,20 +8,19 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class LinkRepositoryTest extends IntegrationTest {
-    private static LinkRepository linkRepository;
-    private static ChatRepository chatRepository;
+class JdbcLinkRepositoryTest extends IntegrationTest {
+    private static JdbcLinkRepository linkRepository;
+    private static JdbcChatRepository chatRepository;
     private static List<Long> chatIds;
 
     private static List<Link> links;
 
     @BeforeAll
     static void setUp() {
-        linkRepository = new LinkRepository(jdbcTemplate);
-        chatRepository = new ChatRepository(jdbcTemplate);
+        linkRepository = new JdbcLinkRepository(jdbcTemplate);
+        chatRepository = new JdbcChatRepository(jdbcTemplate);
 
         chatIds = new ArrayList<>();
         chatIds.add(100L);
@@ -48,7 +45,6 @@ class LinkRepositoryTest extends IntegrationTest {
         );
     }
 
-    @Transactional
     @Test
     public void addAndFindTest() {
         // Arrange

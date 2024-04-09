@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.LinkRepository;
 import edu.java.domain.model.Link;
+import edu.java.domain.repository.jdbc.JdbcLinkRepository;
 import edu.java.service.LinkService;
 import edu.java.service.exceptions.ChatIdNotExistsException;
 import edu.java.service.exceptions.LinkAlreadyTrackException;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
     @Autowired
-    private final LinkRepository linkRepository;
+    private final JdbcLinkRepository linkRepository;
 
     @Autowired
     private final JdbcChatService chatService;

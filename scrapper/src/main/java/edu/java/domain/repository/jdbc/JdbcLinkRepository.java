@@ -1,4 +1,4 @@
-package edu.java.domain;
+package edu.java.domain.repository.jdbc;
 
 import edu.java.domain.model.Link;
 import java.time.OffsetDateTime;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
-public class LinkRepository {
+public class JdbcLinkRepository {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
